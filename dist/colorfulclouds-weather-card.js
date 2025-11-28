@@ -1,5 +1,5 @@
 console.info(
-  "%c  WEATHER CARD  \n%c  Version 2.0.0 ",
+  "%c  WEATHER CARD  \n%c  Version 2.0.1 ",
   "color: orange; font-weight: bold; background: black",
   "color: white; font-weight: bold; background: dimgray"
 );
