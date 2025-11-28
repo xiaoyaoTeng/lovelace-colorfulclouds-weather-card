@@ -429,10 +429,6 @@ class WeatherCard extends LitElement {
                                 "temperature"
                               )}</span
                             >
-                            // <br /><span class="lowTemp"
-                            //   >${Math.round(daily.precipitation * 100) /
-                            //  100}${this.getUnit("precipitation")}</span
-                           // >
                           `
                         : ""}
                     </div>
