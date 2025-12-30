@@ -415,24 +415,14 @@ class WeatherCard extends LitElement {
                       >
                       <br /><i
                         class="icon"
-                        style="background: none, url(${iconUrl}${daily.skycon}.svg) no-repeat; background-size: contain;"
-                      ></i>
-                      <br /><span class="highTemp"
-                        >${daily.temperature}${this.getUnit(
-                          "temperature"
-                        )}</span
-                      >
+                        style="background: none, url(${iconUrl}${daily.skycon}.svg) no-repeat; background-size: contain;">
+                      </i>
+                      <br /><span class="highTemp">
+                      ${daily.temperature}${this.getUnit("temperature")}</span>
                       ${typeof daily.templow !== "undefined"
                         ? html`
-                            <br /><span class="lowTemp"
-                              >${daily.templow}${this.getUnit(
-                                "temperature"
-                              )}</span
-                            >
-                            <br /><span class="lowTemp"
-                              >${Math.round(daily.precipitation * 100) /
-                              100}${this.getUnit("precipitation")}</span
-                            >
+                            <br /><span class="lowTemp">
+                            ${daily.templow}${this.getUnit("temperature")}</span>
                           `
                         : ""}
                     </div>
