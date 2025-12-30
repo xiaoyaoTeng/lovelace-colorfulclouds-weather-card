@@ -401,7 +401,7 @@ class WeatherCard extends LitElement {
         ${this.daily && this.daily.length > 0 && this._config.show_daily
           ? html`
               <div class="forecast clear" @scroll="${this._dscroll}">
-                ${this.daily.map(
+                ${this.daily.slice(0, 5).map(
                   (daily) => html`
                     <div class="day">
                       <span class="dayname"
