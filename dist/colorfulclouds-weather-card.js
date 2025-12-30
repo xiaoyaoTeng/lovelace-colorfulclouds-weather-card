@@ -632,20 +632,23 @@ _today(date) {
   const lang = this._hass.selectedLanguage || this._hass.language;
   let inDate = new Date(date);
   let nowDate = new Date();
-
-  // 正确比较：年、月、日都要相同
-  if (inDate.getFullYear() === nowDate.getFullYear() &&
-      inDate.getMonth() === nowDate.getMonth() &&
-      inDate.getDate() === nowDate.getDate()) {
+  inDate.setHours(0, 0, 0, 0);
+  nowDate.setHours(0, 0, 0, 0);
+  const diffTime = inDate.getTime() - nowDate.getTime();
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) {
     return this._hass.localize(
       "ui.components.date-range-picker.ranges.today"
-    );
+    ) || "今天";
+  } else if (diffDays === 1) {
+    return "明天";
+  } else if (diffDays === 2) {
+    return "后天";
+  } else {
+    return new Date(date).toLocaleDateString(lang, {
+      weekday: "short",
+    });
   }
-  
-  // 不是今天，返回星期几
-  return new Date(date).toLocaleDateString(lang, {
-    weekday: "short",
-  });
 }
   _handleClick() {
     fireEvent(this, "hass-more-info", { entityId: this._config.entity });
