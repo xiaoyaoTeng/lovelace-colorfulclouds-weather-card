@@ -401,7 +401,7 @@ class WeatherCard extends LitElement {
         ${this.daily && this.daily.length > 0 && this._config.show_daily
           ? html`
               <div class="forecast clear" @scroll="${this._dscroll}">
-                ${this.daily.slice(0, 5).map(
+                ${this.daily.slice(0, 6).map(
                   (daily) => html`
                     <div class="day">
                       <span class="dayname"
@@ -628,21 +628,22 @@ class WeatherCard extends LitElement {
         return this._hass.config.unit_system[measure] || "";
     }
   }
-  _today(date) {
-    const lang = this._hass.selectedLanguage || this._hass.language;
-    let retext = new Date(date).toLocaleDateString(lang, {
-      weekday: "short",
-    });
-    let inDate = new Date(date);
-    let nowDate = new Date();
+_today(date) {
+  const lang = this._hass.selectedLanguage || this._hass.language;
+  let inDate = new Date(date);
+  let nowDate = new Date();
 
-    if (inDate.getDate() === nowDate.getDate()) {
-      retext = this._hass.localize(
-        "ui.components.date-range-picker.ranges.today"
-      );
-    }
-    return retext;
+  // 比较日期字符串（更简单）
+  if (inDate.toDateString() === nowDate.toDateString()) {
+    return this._hass.localize(
+      "ui.components.date-range-picker.ranges.today"
+    );
   }
+  
+  return new Date(date).toLocaleDateString(lang, {
+    weekday: "short",
+  });
+}
   _handleClick() {
     fireEvent(this, "hass-more-info", { entityId: this._config.entity });
   }
