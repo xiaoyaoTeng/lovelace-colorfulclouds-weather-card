@@ -632,23 +632,32 @@ _today(date) {
   const lang = this._hass.selectedLanguage || this._hass.language;
   let inDate = new Date(date);
   let nowDate = new Date();
+  
+  // 重置时间为0点，只比较日期
   inDate.setHours(0, 0, 0, 0);
   nowDate.setHours(0, 0, 0, 0);
+  
+  // 计算日期差（天数）
   const diffTime = inDate.getTime() - nowDate.getTime();
   const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-  if (diffDays === 0) {
-    return this._hass.localize(
-      "ui.components.date-range-picker.ranges.today"
-    ) || "今天";
-  } else if (diffDays === 1) {
-    return "明天";
-  } else if (diffDays === 2) {
-    return "后天";
-  } else {
-    return new Date(date).toLocaleDateString(lang, {
-      weekday: "short",
-    });
+  
+  // 如果是今天、明天、后天
+  if (diffDays === 0) return "今天";
+  if (diffDays === 1) return "明天";
+  if (diffDays === 2) return "后天";
+  
+  // 3天后显示中文星期
+  const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  
+  // 判断是否跨年
+  if (inDate.getFullYear() !== nowDate.getFullYear()) {
+    // 跨年情况：显示月/日和星期
+    const monthDay = `${inDate.getMonth() + 1}/${inDate.getDate()}`;
+    return `${monthDay} ${weekdays[inDate.getDay()]}`;
   }
+  
+  // 同年情况：只显示星期
+  return weekdays[inDate.getDay()];
 }
   _handleClick() {
     fireEvent(this, "hass-more-info", { entityId: this._config.entity });
