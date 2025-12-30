@@ -401,7 +401,7 @@ class WeatherCard extends LitElement {
         ${this.daily && this.daily.length > 0 && this._config.show_daily
           ? html`
               <div class="forecast clear" @scroll="${this._dscroll}">
-                ${this.daily.slice(0, 6).map(
+                ${this.daily.slice(0, 5).map(
                   (daily) => html`
                     <div class="day">
                       <span class="dayname"
@@ -633,13 +633,16 @@ _today(date) {
   let inDate = new Date(date);
   let nowDate = new Date();
 
-  // 比较日期字符串（更简单）
-  if (inDate.toDateString() === nowDate.toDateString()) {
+  // 正确比较：年、月、日都要相同
+  if (inDate.getFullYear() === nowDate.getFullYear() &&
+      inDate.getMonth() === nowDate.getMonth() &&
+      inDate.getDate() === nowDate.getDate()) {
     return this._hass.localize(
       "ui.components.date-range-picker.ranges.today"
     );
   }
   
+  // 不是今天，返回星期几
   return new Date(date).toLocaleDateString(lang, {
     weekday: "short",
   });
